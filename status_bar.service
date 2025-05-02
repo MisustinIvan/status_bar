@@ -1,0 +1,12 @@
+[Unit]
+Description=Status bar for X11
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/local/bin/status_bar
+Restart=always
+Environment=DISPLAY=:0
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+
+[Install]
+WantedBy=default.target
