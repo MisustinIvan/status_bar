@@ -1,6 +1,7 @@
 [Unit]
 Description=Status bar for X11
-After=graphical-session.target
+After=graphical.target
+Wants=graphical.target
 
 [Service]
 ExecStart=/usr/local/bin/status_bar

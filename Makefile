@@ -13,10 +13,12 @@ $(NAME): *.c
 	$(CC) $(CFLAGS) -o $(NAME) *.c $(LDFLAGS)
 
 clean:
-	rm -f /usr/local/bin/$(NAME)
+	sudo rm -f /usr/local/bin/$(NAME)
 	rm -f $(NAME)
 
-install: $(NAME) install_service
+install: install_binary install_service
+
+install_binary: $(NAME)
 	sudo cp $(NAME) /usr/local/bin
 
 install_service: $(SERVICE_FILE_NAME)

@@ -10,7 +10,7 @@
 
 void draw_bar();
 
-#define NSECTIONS 10
+#define NSECTIONS 3
 #define SECTION_SIZE 256
 #define BAR_BUFFER_SIZE (NSECTIONS*SECTION_SIZE) + 1
 static char bar_buffer[BAR_BUFFER_SIZE];
