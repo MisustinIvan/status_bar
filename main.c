@@ -86,23 +86,22 @@ void volume_section_updater(struct Section *section) {
 }
 
 void battery_section_updater(struct Section *section) {
-    FILE *fp = popen("cat /sys/class/power_supply/BAT0/capacity", "r");
+    FILE *fp = popen("echo $(cat /sys/class/power_supply/BAT0/capacity)% $(cat /sys/class/power_supply/BAT0/status)", "r");
     if (fp == NULL) {
         snprintf(section->text, SECTION_SIZE, "[Battery?]");
         return;
     }
 
-    char buffer[SECTION_SIZE-3];
+    char buffer[SECTION_SIZE-2];
     size_t n = fread(buffer, 1, SECTION_SIZE - 1, fp);
-    buffer[n] = '\0';
+    if (n > 0) {
+        buffer[n-1] = '\0';
+    } else {
+        buffer[0] = '\0';
+    }
     pclose(fp);
 
-    char *newline = strchr(buffer, '\n');
-    if (newline) {
-        *newline = '\0';
-    }
-
-    snprintf(section->text, SECTION_SIZE, "[%s%%]", buffer);
+    snprintf(section->text, SECTION_SIZE, "[%s]", buffer);
 }
 
 void setup_sections() {
