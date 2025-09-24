@@ -66,8 +66,8 @@ void player_section_updater(struct Section *section) {
     return;
   }
 
-  char buffer[SECTION_SIZE - 2];
-  size_t n = fread(buffer, 1, SECTION_SIZE - 1, fp);
+  char buffer[SECTION_SIZE - 3];
+  size_t n = fread(buffer, 1, SECTION_SIZE - 3, fp);
   buffer[n] = '\0';
   pclose(fp);
 
@@ -127,13 +127,14 @@ void battery_section_updater(struct Section *section) {
 }
 
 void setup_sections() {
-  sections[0] = (Section){.timeout = 1, .updater = time_section_updater};
 
-  sections[1] = (Section){.timeout = 1, .updater = volume_section_updater};
+  sections[0] = (Section){.timeout = 5, .updater = player_section_updater};
 
-  sections[2] = (Section){.timeout = 60, .updater = battery_section_updater};
+  sections[1] = (Section){.timeout = 1, .updater = time_section_updater};
 
-  sections[3] = (Section){.timeout = 5, .updater = player_section_updater};
+  sections[2] = (Section){.timeout = 1, .updater = volume_section_updater};
+
+  sections[3] = (Section){.timeout = 60, .updater = battery_section_updater};
 
   for (int i = 0; i < NSECTIONS; i++) {
     pids[i] = section_go(&sections[i]);
